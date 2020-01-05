@@ -1,5 +1,13 @@
 # nffl
 
+## Set up
+
+After a clone of the source code repository, before a "run" or "build" task can be successfully run, the npm environment has to be set up:
+
+```
+npm install
+```
+
 ## Run
 
 If you haven't done so already, install the [Tabris CLI](https://www.npmjs.com/package/tabris-cli) on your machine:
