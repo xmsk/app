@@ -21,7 +21,7 @@ export class PlayersViewModel {
   public static _restPlayerEndpoint: string =
     'http://intra.xmsk.ch:8081/player/';
 
-  @property public players;
+  @property public players: any[];
   @event public onPlayersChanged: ChangeListeners<PlayersViewModel, 'players'>;
   @property public heading: string = 'NFFL Players';
 
