@@ -13,62 +13,70 @@ import {
   Page,
   TextView
 } from 'tabris';
-import {inject} from 'tabris-decorators';
 import * as fonts from './fonts';
 import {MainViewModel} from './MainViewModel';
 import {MainView} from './MainView';
 
 export class App {
 
-  private _navigationView: NavigationView = new NavigationView({
-    layoutData: 'stretch',
-    drawerActionVisible: true
-  });
-
+  // view models
+  private _main: MainViewModel;
+  private _second: MainViewModel;
+  // global navigation view
+  private _navigationView: NavigationView;
   // mapping of items available in the app
-  private _items: Page[] = [
-    new MainView({
-      layoutData: 'stretch',
-      title: 'Main',
-      model: this._main
-    })
-    ,
-    new MainView({
-      layoutData: 'stretch',
-      title: 'Second',
-      model: this._second
-    })
-  ];
-
+  private _items: Page[];
   // collection view for the items listed in the drawer
-  private _drawerCollectionView: CollectionView = new CollectionView ({
-    layoutData: 'stretchX',
-    top: 'prev() 8',
-    bottom: 0,
-    itemCount: this._items.length,
-    cellHeight: 48,
-    createCell: () => this._createCell(),
-    updateCell: (cell: Composite, index: number) => this._updateCell(cell, index)
-  });
+  private _drawerCollectionView: CollectionView;
 
   /*
     configure options of the app, possibly with arguments passed
     to the constructor, and add the necessary UI components
   */
-  constructor(
-    @inject private _main: MainViewModel,
-    @inject private _second: MainViewModel
-  ) {
-    this._main.buttonText = 'cant touch this!';
-    this._second.buttonText = 'touch this!';
+  constructor() {
+    this._items = [];
+    // create view models for top level applications
+    this._main = new MainViewModel();
+    this._second = new MainViewModel();
 
-    // add navigation view with default page
+    // main page
+    let main = new MainView({
+      layoutData: 'stretch',
+      title: 'Main',
+      model: this._main
+    });
+    this._main.buttonText = 'cant touch this!';
+    this._items.push(main);
+
+    // second page
+    let second = new MainView({
+      layoutData: 'stretch',
+      title: 'Second',
+      model: this._second
+    });
+    this._second.buttonText = 'touch this!';
+    this._items.push(second);
+
+    // create and add navigation view with default page
+    this._navigationView = new NavigationView({
+      layoutData: 'stretch',
+      drawerActionVisible: true
+    });
     this._navigationView.append(this._items[0]);
     contentView.append(
       this._navigationView
     );
 
     // set up drawer
+    this._drawerCollectionView = new CollectionView ({
+      layoutData: 'stretchX',
+      top: 'prev() 8',
+      bottom: 0,
+      itemCount: this._items.length,
+      cellHeight: 48,
+      createCell: () => this._createCell(),
+      updateCell: (cell: Composite, index: number) => this._updateCell(cell, index)
+    });
     drawer.enabled = true;
     drawer.append(
       new Composite({
