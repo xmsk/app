@@ -16,12 +16,15 @@ import {
 import * as fonts from './fonts';
 import {MainViewModel} from './MainViewModel';
 import {MainView} from './MainView';
+import {PlayersViewModel} from './PlayersViewModel';
+import {PlayersView} from './PlayersView';
 
 export class App {
 
   // view models
   private _main: MainViewModel;
   private _second: MainViewModel;
+  private _players: PlayersViewModel;
   // global navigation view
   private _navigationView: NavigationView;
   // mapping of items available in the app
@@ -38,6 +41,7 @@ export class App {
     // create view models for top level applications
     this._main = new MainViewModel();
     this._second = new MainViewModel();
+    this._players = new PlayersViewModel();
 
     // main page
     let main = new MainView({
@@ -56,6 +60,14 @@ export class App {
     });
     this._second.buttonText = 'touch this!';
     this._items.push(second);
+
+    // players page
+    let players = new PlayersView({
+      layoutData: 'stretch',
+      title: 'Players',
+      model: this._players
+    });
+    this._items.push(players);
 
     // create and add navigation view with default page
     this._navigationView = new NavigationView({
