@@ -7,4 +7,4 @@ entry point for the application?
 import {App} from './App';
 import {create} from 'tabris-decorators';
 
-create(App).start();
+create(App);

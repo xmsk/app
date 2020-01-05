@@ -53,7 +53,7 @@ export class App {
 
   /*
     configure options of the app, possibly with arguments passed
-    to the constructor
+    to the constructor, and add the necessary UI components
   */
   constructor(
     @inject private _main: MainViewModel,
@@ -61,15 +61,7 @@ export class App {
   ) {
     this._main.buttonText = 'cant touch this!';
     this._second.buttonText = 'touch this!';
-  }
 
-  /*
-    build the app UI (append necessary items, etc.)
-
-    action:
-      * build the app
-  */
-  public start() {
     // add navigation view with default page
     this._navigationView.append(this._items[0]);
     contentView.append(
