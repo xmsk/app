@@ -7,17 +7,19 @@ create the class for the nffl app including the top layer UI elements
 import {
   contentView,
   drawer,
+} from 'tabris';
+import {
   CollectionView,
   Composite,
   NavigationView,
   Page,
-  TextView
+  TextView,
 } from 'tabris';
 import * as fonts from './fonts';
-import {MainViewModel} from './MainViewModel';
 import {MainView} from './MainView';
-import {PlayersViewModel} from './PlayersViewModel';
+import {MainViewModel} from './MainViewModel';
 import {PlayersView} from './PlayersView';
+import {PlayersViewModel} from './PlayersViewModel';
 
 export class App {
 

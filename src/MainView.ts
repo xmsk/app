@@ -5,18 +5,18 @@ Date: 04.01.2020 09:19
 sample view for a page in the app
 */
 import {
-  Page,
-  TextView,
   Button,
   Constraint,
-  Properties
+  Page,
+  Properties,
+  TextView,
 } from 'tabris';
 import {
+  bindAll,
   component,
-  bindAll
 } from 'tabris-decorators';
-import {MainViewModel} from './MainViewModel';
 import * as fonts from './fonts';
+import {MainViewModel} from './MainViewModel';
 
 @component // Enabled data binding syntax
 export class MainView extends Page {
