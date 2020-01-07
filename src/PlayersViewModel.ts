@@ -19,7 +19,8 @@ export class PlayersViewModel {
 
   // "config" options
   public static _restPlayerEndpoint: string =
-    'http://intra.xmsk.ch:8081/player/';
+    'http://192.168.0.192:8081/player/';
+    // 'http://intra.xmsk.ch:8081/player/';
 
   @property public players: any[];
   @event public onPlayersChanged: ChangeListeners<PlayersViewModel, 'players'>;

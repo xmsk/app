@@ -7,19 +7,26 @@ implement filter mechanisms to filter the players and possibly allow selecting a
 player to display detailed information
 */
 import {
+  Action,
   Button,
   CollectionView,
+  Composite,
+  NavigationView,
   Page,
+  Popover,
   Properties,
   TextView,
-  Composite
+  Widget,
+  WidgetTapEvent,
 } from 'tabris';
 import {
+  bindAll,
   component,
-  bindAll
 } from 'tabris-decorators';
-import {PlayersViewModel} from './PlayersViewModel';
 import * as fonts from './fonts';
+import {PlayersViewModel} from './PlayersViewModel';
+import {PlayerView} from './PlayerView';
+import {PlayerViewModel} from './PlayerViewModel';
 
 @component // Enabled data binding syntax
 export class PlayersView extends Page {
@@ -47,8 +54,9 @@ export class PlayersView extends Page {
     // create and add collection to display the players
     this._playersCollectionView = new CollectionView({
       layoutData: 'stretchX',
+      // height: 500,
+      bottom: 'next()',
       top: 'prev() 8',
-      bottom: 0,
       itemCount: this.model.players.length,
       createCell: () => this._createPlayerCell(),
       updateCell: (cell: Composite, index: number) => this._updatePlayerCell(cell, index)
@@ -76,7 +84,13 @@ export class PlayersView extends Page {
   private _createPlayerCell() {
     let cell = new Composite({
       highlightOnTouch: true
-    });
+    }).onTap(
+      (ev) => {
+        console.log('click player');
+        console.log(ev.target);
+        this._openPlayerPopover(ev);
+      }
+    );
 
     // add text boxes for player information
     const tv_JerseyNumber = new TextView({
@@ -128,6 +142,23 @@ export class PlayersView extends Page {
 
   private _rebuildPlayersCollectionView() {
     this._playersCollectionView.itemCount = this.model.players.length;
+  }
+
+  private _openPlayerPopover(ev: WidgetTapEvent<Widget>) {
+    console.log("function open player popover");
+    const playerIndex = this._playersCollectionView.itemIndex(ev.target);
+    const player = this.model.players[playerIndex];
+    let playerModel = new PlayerViewModel(player);
+    const popover = Popover.open(
+      <Popover>
+        <NavigationView stretch>
+          <Action placement='navigation' title='Close' onSelect={() => popover.close()}/>
+          <Page title='Popover'>
+            <PlayerView stretch model={playerModel}/>
+          </Page>
+        </NavigationView>
+      </Popover>
+    );
   }
 
 }
