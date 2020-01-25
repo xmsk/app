@@ -32,7 +32,4 @@ export class Player extends Model {
     public Position: string;
     @jsonMember
     public RefereeCertificateion: string;
-
-    // Model fields
-    protected restEndpoint: string = "/player/";
 }

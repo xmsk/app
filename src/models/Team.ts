@@ -26,7 +26,4 @@ export class Team extends Model {
     public HomeTown: string;
     @jsonMember
     public League: League;
-
-    // Model fields
-    protected restEndpoint: string = "/team/";
 }
