@@ -19,5 +19,5 @@ export async function restGET(url: string = '') {
     // Default options are marked with *
     const response = await fetch(url);
 
-    return await response.json(); // parses JSON response into native JavaScript objects
+    return response.json(); // parses JSON response into native JavaScript objects
 }
