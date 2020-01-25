@@ -10,8 +10,10 @@
     "start": "tabris serve -a -w"
   },
   "dependencies": {
+    "reflect-metadata": ">=0.1.13",
     "tabris": "~3.2.1",
-    "tabris-decorators": "~3.2.1"
+    "tabris-decorators": "~3.2.1",
+    "typedjson": ">=1.5.1"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
