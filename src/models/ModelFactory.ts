@@ -45,30 +45,6 @@ export class ModelFactory<T extends Model> {
 
     /*
     construct an object of a Model subclass by calling the REST endpoint and
-    initializing the class fields and return it
-    arguments:
-        model: ModelType representing the Model instance that should be created
-        cls: class of the subclass to construct (e.g. Player)
-
-    returns:
-        model: the Model that was constructed
-    */
-    public construct(
-        model: ModelType,
-        cls: Constructor<T>
-    ): T {
-        let serializer = new TypedJSON(cls);
-
-        if (typeof(model) === "object") {
-            // no need to fetch the data from the server
-            return serializer.parse(model);
-        } else {
-            return serializer.parse(this.getJsonById(model));
-        }
-    }
-
-    /*
-    construct an object of a Model subclass by calling the REST endpoint and
     initializing the class fields and append it to a View
     arguments:
         model: ModelType representing the Model instance that should be created
@@ -86,8 +62,26 @@ export class ModelFactory<T extends Model> {
         view: View,
         cls: Constructor<T>
     ): void {
-        let constructed: Model = this.construct(model, cls);
-        view.setModel(constructed);
+        let serializer = new TypedJSON(cls);
+
+        console.debug("Model received:");
+        console.debug(model);
+
+        if (typeof(model) === "object") {
+            // no need to fetch the data from the server
+            view.setModel(serializer.parse(model));
+        } else {
+            this.getJsonPromiseById(model).then(
+                (p) => {
+                    console.debug(p);
+                    view.setModel(serializer.parse(p));
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                }
+            );
+        }
     }
 
     /*
@@ -99,7 +93,7 @@ export class ModelFactory<T extends Model> {
     returns:
         jsonObj: JSON object of the model with the given id
     */
-    protected getJsonById(id: number): object {
+    protected async getJsonPromiseById(id: number): Promise<Model> {
         return restGET(this.restHostname + this.restEndpoint + String(id));
     }
 }
