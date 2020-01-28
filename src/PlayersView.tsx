@@ -24,9 +24,10 @@ import {
   component,
 } from 'tabris-decorators';
 import * as fonts from './fonts';
+import { Player } from './models/Player';
+import { PlayerStats } from './models/PlayerStats';
 import {PlayersViewModel} from './PlayersViewModel';
 import {PlayerView} from './PlayerView';
-import {PlayerViewModel} from './PlayerViewModel';
 
 @component // Enabled data binding syntax
 export class PlayersView extends Page {
@@ -148,17 +149,19 @@ export class PlayersView extends Page {
     console.log("function open player popover");
     const playerIndex = this._playersCollectionView.itemIndex(ev.target);
     const player = this.model.players[playerIndex];
-    let playerModel = new PlayerViewModel(player);
+    const playerView = <PlayerView stretch/>;
+    Player.factory.constructToView(player, playerView, Player);
+    PlayerStats.factory.constructToView(player.PlayerId, playerView, PlayerStats);
     const popover = Popover.open(
       <Popover>
         <NavigationView stretch>
           <Action placement='navigation' title='Close' onSelect={() => popover.close()}/>
-          <Page title='Popover'>
-            <PlayerView stretch model={playerModel}/>
-          </Page>
+          <Page title='Popover'/>
         </NavigationView>
       </Popover>
     );
+    let page = popover.contentView.find('Page').only();
+    playerView.appendTo(page);
   }
 
 }
