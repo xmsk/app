@@ -6,6 +6,7 @@ implement the league object as used in the application
 REST requests that return league objects are mapped to this class
 */
 
+import { property } from 'tabris-decorators';
 import {
     jsonMember,
     jsonObject
@@ -18,7 +19,9 @@ export class League extends Model {
     public static factory: ModelFactory<League> = new ModelFactory("/league/");
     // League fields
     @jsonMember
+    @property
     public LeagueId: number;
     @jsonMember
+    @property
     public LeagueName: string;
 }

@@ -4,6 +4,9 @@ Date: 22.01.2020 18:15
 
 abstract class that all Models should extend, this is to make sure that all
 Models are jsonObjects and can be parsed with TypedJSON
+
+the fields have to be @jsonMember so they can be parsed using typedJSON and they
+have to be @property so the bind to widget properties works
 */
 
 import { ModelFactory } from "./ModelFactory";
