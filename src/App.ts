@@ -25,7 +25,6 @@ export class App {
 
   // view models
   private _main: MainViewModel;
-  private _second: MainViewModel;
   private _players: PlayersViewModel;
   // global navigation view
   private _navigationView: NavigationView;
@@ -42,7 +41,6 @@ export class App {
     this._items = [];
     // create view models for top level applications
     this._main = new MainViewModel();
-    this._second = new MainViewModel();
     this._players = new PlayersViewModel();
 
     // main page
@@ -53,15 +51,6 @@ export class App {
     });
     this._main.buttonText = 'cant touch this!';
     this._items.push(main);
-
-    // second page
-    let second = new MainView({
-      layoutData: 'stretch',
-      title: 'Second',
-      model: this._second
-    });
-    this._second.buttonText = 'touch this!';
-    this._items.push(second);
 
     // players page
     let players = new PlayersView({
