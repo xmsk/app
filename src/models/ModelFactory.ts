@@ -22,7 +22,7 @@ export type Constructor<T> = new (...args: any[]) => T;
 export type ModelType = object | number;
 
 export class ModelFactory<T extends Model> {
-    protected restHostname: string = "http://intra.xmsk.ch:8081";
+    protected restHostname: string = "http://192.168.0.192:8081";
     protected restEndpoint: string;
 
     /*
