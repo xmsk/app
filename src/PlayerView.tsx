@@ -17,10 +17,10 @@ import {
     component,
     property,
 } from 'tabris-decorators';
-import * as fonts from './fonts';
 import { Model } from './models/Model';
 import { Player } from './models/Player';
 import { PlayerStats } from './models/PlayerStats';
+import * as fonts from './utils/fonts';
 import { View } from './views/View';
 
 @component // Enabled data binding syntax

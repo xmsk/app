@@ -15,8 +15,8 @@ import {
   bindAll,
   component,
 } from 'tabris-decorators';
-import * as fonts from './fonts';
 import {MainViewModel} from './MainViewModel';
+import * as fonts from './utils/fonts';
 
 @component // Enabled data binding syntax
 export class MainView extends Page {
