@@ -13,7 +13,7 @@ import {
 } from 'tabris-decorators';
 import {
   restGET
-} from './utils/rest';
+} from '../utils/rest';
 
 export class PlayersViewModel {
 

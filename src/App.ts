@@ -15,11 +15,11 @@ import {
   Page,
   TextView,
 } from 'tabris';
-import {MainView} from './MainView';
-import {MainViewModel} from './MainViewModel';
-import {PlayersView} from './PlayersView';
-import {PlayersViewModel} from './PlayersViewModel';
+import {MainViewModel} from './models/MainViewModel';
+import {PlayersViewModel} from './models/PlayersViewModel';
 import * as fonts from './utils/fonts';
+import {MainView} from './views/MainView';
+import {PlayersView} from './views/PlayersView';
 
 export class App {
 

@@ -17,11 +17,11 @@ import {
     component,
     property,
 } from 'tabris-decorators';
-import { Model } from './models/Model';
-import { Player } from './models/Player';
-import { PlayerStats } from './models/PlayerStats';
-import * as fonts from './utils/fonts';
-import { View } from './views/View';
+import { Model } from '../models/Model';
+import { Player } from '../models/Player';
+import { PlayerStats } from '../models/PlayerStats';
+import * as fonts from '../utils/fonts';
+import { View } from './View';
 
 @component // Enabled data binding syntax
 export class PlayerView extends Composite implements View {

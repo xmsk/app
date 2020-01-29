@@ -23,11 +23,11 @@ import {
   bindAll,
   component,
 } from 'tabris-decorators';
-import { Player } from './models/Player';
-import { PlayerStats } from './models/PlayerStats';
-import {PlayersViewModel} from './PlayersViewModel';
+import { Player } from '../models/Player';
+import { PlayerStats } from '../models/PlayerStats';
+import {PlayersViewModel} from '../models/PlayersViewModel';
+import * as fonts from '../utils/fonts';
 import {PlayerView} from './PlayerView';
-import * as fonts from './utils/fonts';
 
 @component // Enabled data binding syntax
 export class PlayersView extends Page {
