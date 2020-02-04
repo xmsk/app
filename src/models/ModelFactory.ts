@@ -2,7 +2,8 @@
 Author: Max Kessler <max.e.kessler@gmail.com>
 Date: 22.01.2020 18:15
 
-implement the abstract ModelFactory that serves as base class for all REST
+implement the ModelFactory that serves as factory for single JSON objects
+retrieved via a REST interface; it also servers as a base class for all REST
 object factories; these factories should be used to create Model objects
 
 use some module like https://github.com/JohnWeisz/TypedJSON to parse JSON to
@@ -13,39 +14,20 @@ import { TypedJSON } from 'typedjson';
 import { restGET } from '../utils/rest';
 import { View } from '../views/View';
 import { Model } from './Model';
+import {
+    Constructor,
+    RESTFactory
+} from './RESTFactory';
 
-// type that the TypedJSON class constructor needs (as defined in the source)
-// tslint:disable-next-line: no-any
-export type Constructor<T> = new (...args: any[]) => T;
 // type that we allow to be used to construct a model (number for getById and
 // JSON object for an existing JSON object)
 export type ModelType = object | number;
 
-export class ModelFactory<T extends Model> {
-    protected restHostname: string = "http://192.168.0.192:8081";
-    protected restEndpoint: string;
-
-    /*
-    construct a ModelFactory instance; unfortunately we have to pass the
-    endpoint here because there is no reasonable way of infering it statically
-    from anywhere
-        * we cannot access static properties of the T class because generics
-          only provide the instance side of a class, not the static side
-        * if we make the ModelFactory class abstract we have to create a new
-          factory class for each new model, this is quite anoying
-
-    arguments:
-        endpoint: string representing the relative path of the endpoint where a
-            T type json object can be retrieved, e.g. /player/ - must include
-            leading and trailing slash
-    */
-    constructor(endpoint: string) {
-        this.restEndpoint = endpoint;
-    }
-
+export class ModelFactory<T extends Model> extends RESTFactory {
     /*
     construct an object of a Model subclass by calling the REST endpoint and
     initializing the class fields and append it to a View
+
     arguments:
         model: ModelType representing the Model instance that should be created
         view: View to which the model should be added
@@ -55,7 +37,7 @@ export class ModelFactory<T extends Model> {
         void
 
     actions:
-        add the created Model to view by calling the setModel function
+        add the created Model to view
     */
     public constructToView(
         model: ModelType,
@@ -64,16 +46,12 @@ export class ModelFactory<T extends Model> {
     ): void {
         let serializer = new TypedJSON(cls);
 
-        console.debug("Model received:");
-        console.debug(model);
-
         if (typeof(model) === "object") {
             // no need to fetch the data from the server
             view.setModel(serializer.parse(model));
         } else {
             this.getJsonPromiseById(model).then(
                 (p) => {
-                    console.debug(p);
                     view.setModel(serializer.parse(p));
                 }
             ).catch(

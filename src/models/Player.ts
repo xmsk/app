@@ -12,32 +12,35 @@ import {
     jsonObject
 } from 'typedjson';
 import { Model } from './Model';
+import { ModelArrayFactory } from './ModelArrayFactory';
 import { ModelFactory } from './ModelFactory';
 import { Team } from './Team';
 
 @jsonObject
 export class Player extends Model {
     public static factory: ModelFactory<Player> = new ModelFactory("/player/");
+    public static arrayFactory: ModelArrayFactory<Player> =
+        new ModelArrayFactory("/player/");
     // Player fields
-    @jsonMember
     @property
+    @jsonMember
     public PlayerId: number;
-    @jsonMember
     @property
+    @jsonMember
     public FirstName: string;
-    @jsonMember
     @property
+    @jsonMember
     public LastName: string;
-    @jsonMember
     @property
+    @jsonMember
     public Team: Team;
-    @jsonMember
     @property
+    @jsonMember
     public JerseyNumber: number;
-    @jsonMember
     @property
+    @jsonMember
     public Position: string;
-    @jsonMember
     @property
+    @jsonMember
     public RefereeCertificateion: string;
 }

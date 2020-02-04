@@ -59,3 +59,22 @@ npm run lint
 The app can be built using the online build service at [tabrisjs.com](https://tabrisjs.com) or locally using [Tabris.js CLI](https://www.npmjs.com/package/tabris-cli).
 
 See [Building a Tabris.js App](https://tabrisjs.com/documentation/3.2/build.html) for more information.
+
+## Troubleshooting
+### Decorator order
+When using both the `@property` decorator of `Tabris` and the `@jsonMember` decorator of `TypedJSON` the order of the decorators is crucial!
+This
+```
+@property
+@jsonMember
+public PlayerId: number;
+```
+works, this
+```
+@jsonMember
+@property
+public PlayerId: number;
+```
+doesn't.
+
+UNDER NO CIRCUMSTANCES CHANGE THE ORDER OF THE DECORATORS...DEBUGGING TOOK 4 DAYS.

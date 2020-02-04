@@ -9,6 +9,7 @@ player to display detailed information
 import {
   Action,
   Button,
+  ChangeListeners,
   CollectionView,
   Composite,
   NavigationView,
@@ -20,27 +21,21 @@ import {
   WidgetTapEvent,
 } from 'tabris';
 import {
-  bindAll,
   component,
+  event,
+  property,
 } from 'tabris-decorators';
 import { Player } from '../models/Player';
 import { PlayerStats } from '../models/PlayerStats';
-import {PlayersViewModel} from '../models/PlayersViewModel';
 import * as fonts from '../utils/fonts';
+import { ArrayView } from './ArrayView';
 import {PlayerView} from './PlayerView';
 
 @component // Enabled data binding syntax
-export class PlayersView extends Page {
+export class PlayersView extends Page implements ArrayView {
 
-  // need the bind statement so model is a property so it gets assigned by the
-  // constructor as called in the App class
-  //
-  // use more binds for filter fields
-  @bindAll({
-    heading: '#heading.text'
-  })
-  public model: PlayersViewModel;
-
+  @property public players: Player[] = [];
+  @event public onPlayersChanged: ChangeListeners<PlayersView, 'players'>;
   private _playersCollectionView: CollectionView;
 
   constructor(properties: Properties<PlayersView>) {
@@ -48,7 +43,7 @@ export class PlayersView extends Page {
 
     // need to set properties before we reference them (e.g. the model)
     this.set(properties);
-    this.model.onPlayersChanged(
+    this.onPlayersChanged(
       () => this._rebuildPlayersCollectionView()
     );
 
@@ -58,7 +53,7 @@ export class PlayersView extends Page {
       // height: 500,
       bottom: 'next()',
       top: 'prev() 8',
-      itemCount: this.model.players.length,
+      itemCount: this.players.length,
       createCell: () => this._createPlayerCell(),
       updateCell: (cell: Composite, index: number) => this._updatePlayerCell(cell, index)
     });
@@ -76,10 +71,18 @@ export class PlayersView extends Page {
         text: 'Refresh',
         font: fonts.large
       }).onSelect(
-        () => this.model.refreshPlayers()
+        () => this.refreshPlayers()
       ),
       this._playersCollectionView
     );
+  }
+
+  public setModelArray(array: Player[]): void {
+    this.players = array;
+  }
+
+  public refreshPlayers() {
+    Player.arrayFactory.constructToView("", this, Player);
   }
 
   private _createPlayerCell() {
@@ -131,24 +134,24 @@ export class PlayersView extends Page {
   }
 
   private _updatePlayerCell(cell: Composite, index: number) {
-    const player = this.model.players[index];
+    const player = this.players[index];
     const tv_JerseyNumber: TextView = cell.find(TextView).only('#JerseyNumber');
     const tv_FirstName: TextView = cell.find(TextView).only('#FirstName');
     const tv_LastName: TextView = cell.find(TextView).only('#LastName');
 
-    tv_JerseyNumber.text = player.JerseyNumber;
+    tv_JerseyNumber.text = String(player.JerseyNumber);
     tv_FirstName.text = player.FirstName;
     tv_LastName.text = player.LastName;
   }
 
   private _rebuildPlayersCollectionView() {
-    this._playersCollectionView.itemCount = this.model.players.length;
+    this._playersCollectionView.itemCount = this.players.length;
   }
 
   private _openPlayerPopover(ev: WidgetTapEvent<Widget>) {
     console.log("function open player popover");
     const playerIndex = this._playersCollectionView.itemIndex(ev.target);
-    const player = this.model.players[playerIndex];
+    const player = this.players[playerIndex];
     const playerView = <PlayerView stretch/>;
     Player.factory.constructToView(player, playerView, Player);
     PlayerStats.factory.constructToView(player.PlayerId, playerView, PlayerStats);
@@ -163,5 +166,4 @@ export class PlayersView extends Page {
     let page = popover.contentView.find('Page').only();
     playerView.appendTo(page);
   }
-
 }

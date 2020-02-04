@@ -16,7 +16,7 @@ import {
   TextView,
 } from 'tabris';
 import {MainViewModel} from './models/MainViewModel';
-import {PlayersViewModel} from './models/PlayersViewModel';
+import { Player } from './models/Player';
 import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
@@ -25,7 +25,6 @@ export class App {
 
   // view models
   private _main: MainViewModel;
-  private _players: PlayersViewModel;
   // global navigation view
   private _navigationView: NavigationView;
   // mapping of items available in the app
@@ -41,7 +40,6 @@ export class App {
     this._items = [];
     // create view models for top level applications
     this._main = new MainViewModel();
-    this._players = new PlayersViewModel();
 
     // main page
     let main = new MainView({
@@ -55,9 +53,9 @@ export class App {
     // players page
     let players = new PlayersView({
       layoutData: 'stretch',
-      title: 'Players',
-      model: this._players
+      title: 'Players'
     });
+    Player.arrayFactory.constructToView("", players, Player);
     this._items.push(players);
 
     // create and add navigation view with default page
