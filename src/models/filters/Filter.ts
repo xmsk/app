@@ -59,14 +59,14 @@ export abstract class Filter {
      */
     public abstract filterModel(model: Model): boolean;
 
-   /**
-    * filter a given array of Models and return an array of elements matching
-    * the filter
-    *
-    * @param models - an array of Model instances to be filtered
-    *
-    * @returns filteredArray - an array containing copies of the
-    * Models matching the filter
-    */
-   public abstract filterArray(models: Model[]): Model[];
+    /**
+     * filter a given array of Models and return an array of elements matching
+     * the filter
+     *
+     * @param models - an array of Model instances to be filtered
+     *
+     * @returns filteredArray - an array containing copies of the
+     * Models matching the filter
+     */
+    public abstract filterArray(models: Model[]): Model[];
 }
