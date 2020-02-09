@@ -20,7 +20,6 @@ import { Player } from './models/Player';
 import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
-import { PlayerFilter } from './models/filters/PlayerFilter';
 
 export class App {
 
