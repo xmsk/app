@@ -9,9 +9,6 @@ player to display detailed information
 import {
   Action,
   Button,
-  ChangeListeners,
-  CollectionView,
-  Composite,
   NavigationView,
   Page,
   Popover,
@@ -21,42 +18,45 @@ import {
   WidgetTapEvent,
 } from 'tabris';
 import {
+  Cell,
   component,
-  event,
+  List,
+  ListView,
   property,
 } from 'tabris-decorators';
 import { Player } from '../models/Player';
 import { PlayerStats } from '../models/PlayerStats';
 import * as fonts from '../utils/fonts';
-import { ArrayView } from './ArrayView';
+import { ModelListSettable } from './ModelListSettable';
 import {PlayerView} from './PlayerView';
 
 @component // Enabled data binding syntax
-export class PlayersView extends Page implements ArrayView {
+export class PlayersView extends Page implements ModelListSettable {
 
-  @property public players: Player[] = [];
-  @event public onPlayersChanged: ChangeListeners<PlayersView, 'players'>;
-  private _playersCollectionView: CollectionView;
+  @property public players: List<Player> = new List<Player>();
+  private _playersListView: ListView<Player>;
 
   constructor(properties: Properties<PlayersView>) {
     super();
 
     // need to set properties before we reference them (e.g. the model)
     this.set(properties);
-    this.onPlayersChanged(
-      () => this._rebuildPlayersCollectionView()
-    );
 
-    // create and add collection to display the players
-    this._playersCollectionView = new CollectionView({
-      layoutData: 'stretchX',
-      // height: 500,
-      bottom: 'next()',
-      top: 'prev() 8',
-      itemCount: this.players.length,
-      createCell: () => this._createPlayerCell(),
-      updateCell: (cell: Composite, index: number) => this._updatePlayerCell(cell, index)
-    });
+    // create and add ListView to display the players
+    this._playersListView = <ListView stretchX bottom='next()' top='prev() 8' items={this.players}>
+      <Cell highlightOnTouch onTap={
+        (ev) => {
+          console.log('click player');
+          console.log(ev.target);
+          this._openPlayerPopover(ev);
+        }
+      }>
+        <TextView centerY left={0} width={40} alignment='right' font={fonts.large} textColor='#212121' bind-text='item.JerseyNumber'/>
+        <TextView centerY left='prev() 12' width={150} alignment='left' font={fonts.large} textColor='#212121' bind-text='item.FirstName'/>
+        <TextView centerY left='prev() 8' width={150} alignment='left' font={fonts.large} textColor='#212121' bind-text='item.LastName'/>
+      </Cell>
+    </ListView>;
+
     this.append(
       new TextView({
         id: 'heading',
@@ -73,84 +73,23 @@ export class PlayersView extends Page implements ArrayView {
       }).onSelect(
         () => this.refreshPlayers()
       ),
-      this._playersCollectionView
+      this._playersListView
     );
   }
 
-  public setModelArray(array: Player[]): void {
-    this.players = array;
+  public setModelList(list: List<Player>): void {
+    this.players = list;
+    // have to update ListView items because assignment destroys the object?
+    this._playersListView.items = this.players;
   }
 
   public refreshPlayers() {
-    Player.arrayFactory.constructToView("", this, Player);
-  }
-
-  private _createPlayerCell() {
-    let cell = new Composite({
-      highlightOnTouch: true
-    }).onTap(
-      (ev) => {
-        console.log('click player');
-        console.log(ev.target);
-        this._openPlayerPopover(ev);
-      }
-    );
-
-    // add text boxes for player information
-    const tv_JerseyNumber = new TextView({
-      id: "JerseyNumber",
-      centerY: 0,
-      left: 0,
-      width: 40,
-      alignment: 'right',
-      font: fonts.large,
-      textColor: '#212121'
-    });
-    cell.append(tv_JerseyNumber);
-
-    const tv_FirstName = new TextView({
-      id: "FirstName",
-      centerY: 0,
-      left: 'prev() 12',
-      width: 150,
-      alignment: 'left',
-      font: fonts.large,
-      textColor: '#212121'
-    });
-    cell.append(tv_FirstName);
-
-    const tv_LastName = new TextView({
-      id: "LastName",
-      centerY: 0,
-      left: 'prev() 8',
-      width: 150,
-      alignment: 'left',
-      font: fonts.large,
-      textColor: '#212121'
-    });
-    cell.append(tv_LastName);
-
-    return cell;
-  }
-
-  private _updatePlayerCell(cell: Composite, index: number) {
-    const player = this.players[index];
-    const tv_JerseyNumber: TextView = cell.find(TextView).only('#JerseyNumber');
-    const tv_FirstName: TextView = cell.find(TextView).only('#FirstName');
-    const tv_LastName: TextView = cell.find(TextView).only('#LastName');
-
-    tv_JerseyNumber.text = String(player.JerseyNumber);
-    tv_FirstName.text = player.FirstName;
-    tv_LastName.text = player.LastName;
-  }
-
-  private _rebuildPlayersCollectionView() {
-    this._playersCollectionView.itemCount = this.players.length;
+    Player.listFactory.constructToView("", this, Player);
   }
 
   private _openPlayerPopover(ev: WidgetTapEvent<Widget>) {
     console.log("function open player popover");
-    const playerIndex = this._playersCollectionView.itemIndex(ev.target);
+    const playerIndex = this._playersListView.itemIndex(ev.target);
     const player = this.players[playerIndex];
     const playerView = <PlayerView stretch/>;
     Player.factory.constructToView(player, playerView, Player);

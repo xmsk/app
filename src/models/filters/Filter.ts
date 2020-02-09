@@ -2,8 +2,8 @@
 Author: Max Kessler <max.e.kessler@gmail.com>
 Date: 22.01.2020 18:15
 
-abstract base class for filtering ModelArrays, either directly at the REST
-request or by selecting a subset of an array to display
+abstract base class for filtering ModelLists, either directly at the REST
+request or by selecting a subset of a list to display
 
 the Filter sub classes should implement the allowed filters as class members
 that can be initialized using TypedJSON; they should also have a property
@@ -11,6 +11,7 @@ that can be initialized using TypedJSON; they should also have a property
 query string parameters
 */
 
+import { List } from "tabris-decorators";
 import { Model } from "../Model";
 
 export abstract class Filter {
@@ -34,7 +35,7 @@ export abstract class Filter {
     /**
      * get a representation of the Filter members that can be used as query
      * string parameters in a REST call to a REST endpoint returning a
-     * ModelArray
+     * ModelList
      *
      * @returns a string representation of allwoed query string
      *  parameters, if there are not qllowed query string parameters set, an
@@ -60,13 +61,13 @@ export abstract class Filter {
     public abstract filterModel(model: Model): boolean;
 
     /**
-     * filter a given array of Models and return an array of elements matching
+     * filter a given list of Models and return a list of elements matching
      * the filter
      *
-     * @param models - an array of Model instances to be filtered
+     * @param models - a list of Model instances to be filtered
      *
-     * @returns filteredArray - an array containing copies of the
+     * @returns filteredList - a list containing copies of the
      * Models matching the filter
      */
-    public abstract filterArray(models: Model[]): Model[];
+    public abstract filterList(models: List<Model>): List<Model>;
 }

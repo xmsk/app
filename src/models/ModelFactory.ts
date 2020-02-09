@@ -12,7 +12,7 @@ class objects?
 
 import { TypedJSON } from 'typedjson';
 import { restGET } from '../utils/rest';
-import { View } from '../views/View';
+import { ModelSettable } from '../views/ModelSettable';
 import { Model } from './Model';
 import {
     Constructor,
@@ -41,7 +41,7 @@ export class ModelFactory<T extends Model> extends RESTFactory {
     */
     public constructToView(
         model: ModelType,
-        view: View,
+        view: ModelSettable,
         cls: Constructor<T>
     ): void {
         let serializer = new TypedJSON(cls);

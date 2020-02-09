@@ -20,6 +20,7 @@ import { Player } from './models/Player';
 import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
+import { PlayerFilter } from './models/filters/PlayerFilter';
 
 export class App {
 
@@ -55,7 +56,7 @@ export class App {
       layoutData: 'stretch',
       title: 'Players'
     });
-    Player.arrayFactory.constructToView("", players, Player);
+    Player.listFactory.constructToView("", players, Player);
     this._items.push(players);
 
     // create and add navigation view with default page

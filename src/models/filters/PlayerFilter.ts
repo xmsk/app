@@ -2,9 +2,10 @@
 Author: Max Kessler <max.e.kessler@gmail.com>
 Date: 22.01.2020 18:15
 
-Filter class for filtering Player arrays
+Filter class for filtering Player lists
 */
 
+import { List } from "tabris-decorators";
 import {
     jsonMember,
     jsonObject,
@@ -71,9 +72,13 @@ export class PlayerFilter extends Filter {
             Filter.compareUndefined(this.TeamName, player.Team.TeamName);
     }
 
-    public filterArray(players: Player[]): Player[] {
-        return players.filter(
+    public filterList(players: List<Player>): List<Player> {
+        // need to convert to Array because Lsit does not have a 'filter' method
+        let playersArray: Player[] = Array.from(players);
+        playersArray = playersArray.filter(
             (el) => this.filterModel(el)
         );
+
+        return List.from(playersArray);
     }
 }

@@ -21,10 +21,10 @@ import { Model } from '../models/Model';
 import { Player } from '../models/Player';
 import { PlayerStats } from '../models/PlayerStats';
 import * as fonts from '../utils/fonts';
-import { View } from './View';
+import { ModelSettable } from './ModelSettable';
 
 @component // Enabled data binding syntax
-export class PlayerView extends Composite implements View {
+export class PlayerView extends Composite implements ModelSettable {
 
     @property public player: Player;
     @property public stats: PlayerStats;

@@ -12,15 +12,15 @@ import {
     jsonObject
 } from 'typedjson';
 import { Model } from './Model';
-import { ModelArrayFactory } from './ModelArrayFactory';
 import { ModelFactory } from './ModelFactory';
+import { ModelListFactory } from './ModelListFactory';
 import { Team } from './Team';
 
 @jsonObject
 export class Player extends Model {
     public static factory: ModelFactory<Player> = new ModelFactory("/player/");
-    public static arrayFactory: ModelArrayFactory<Player> =
-        new ModelArrayFactory("/player/");
+    public static listFactory: ModelListFactory<Player> =
+        new ModelListFactory("/player/");
     // Player fields
     @property
     @jsonMember
