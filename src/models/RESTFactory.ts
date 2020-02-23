@@ -10,12 +10,14 @@ views; however, since the definitions of the functions vary based on the data
 they cannot be defined here
 */
 
+import { restHostname } from '../utils/rest';
+
 // type that the TypedJSON class constructor needs (as defined in the source)
 // tslint:disable-next-line: no-any
 export type Constructor<T> = new (...args: any[]) => T;
 
 export abstract class RESTFactory {
-    protected restHostname: string = "http://192.168.0.192:8081";
+    protected restHostname: string = restHostname;
     protected restEndpoint: string;
 
     /*

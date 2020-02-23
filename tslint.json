@@ -23,6 +23,7 @@
     "no-any": true,
     "no-boolean-literal-compare": true,
     "no-console": false,
+    "max-classes-per-file": [false],
     "typedef": [
       true,
       "member-variable-declaration",

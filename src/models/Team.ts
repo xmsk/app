@@ -19,16 +19,20 @@ import { ModelFactory } from './ModelFactory';
 export class Team extends Model {
     public static factory: ModelFactory<Team> = new ModelFactory("/team/");
     // team fields
-    @jsonMember
     @property
+    @jsonMember
     public TeamId: number;
-    @jsonMember
     @property
+    @jsonMember
     public TeamName: string;
-    @jsonMember
     @property
+    @jsonMember
     public HomeTown: string;
-    @jsonMember
     @property
+    @jsonMember
     public League: League;
+
+    get Id(): number {
+        return this.TeamId;
+    }
 }

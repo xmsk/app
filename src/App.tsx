@@ -20,6 +20,7 @@ import { Player } from './models/Player';
 import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
+import { RefereeView } from './views/RefereeView/RefereeView';
 
 export class App {
 
@@ -49,6 +50,10 @@ export class App {
         let players = <PlayersView stretch title='Players'/>;
         Player.listFactory.constructToView("", players, Player);
         this.items.push(players);
+
+        // page for officiating Matches
+        let referee = <RefereeView stretch title='Referee'/>;
+        this.items.push(referee);
 
         // create and add navigation view with default page
         this.navigationView = <NavigationView stretch drawerActionVisible/>;

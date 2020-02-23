@@ -43,4 +43,16 @@ export class Player extends Model {
     @property
     @jsonMember
     public RefereeCertificateion: string;
+
+    get Id(): number {
+        return this.PlayerId;
+    }
+
+    get FullName() {
+        return this.FirstName + " " + this.LastName;
+    }
+
+    get Identification() {
+        return this.JerseyNumber + " - " + this.FullName;
+    }
 }

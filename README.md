@@ -78,3 +78,7 @@ public PlayerId: number;
 doesn't.
 
 UNDER NO CIRCUMSTANCES CHANGE THE ORDER OF THE DECORATORS...DEBUGGING TOOK 4 DAYS.
+
+### Ghost cells
+When we add (`.push()`) items to a `List` that is used as the `items` property of a `ListView`, we get the problem that we have ghost cells that have an undefined `item` and do not display anything.
+In order to circumvent this problem we have to create a completely new list and reassign the `items` property of the `ListView`.

@@ -11,22 +11,31 @@ naming convention is <size>-<weight> where
 */
 import {Font} from 'tabris';
 
+export class CustomFont extends Font {
+    get viewHeight() {
+        return this.size + 8;
+    }
+
+    get inputHeight() {
+        return this.size + 36;
+    }
+
+    get buttonHeight() {
+        return this.size + 30;
+    }
+
+    get pickerHeight() {
+        return this.size + 34;
+    }
+}
+
 // global definitions
-let sizeSmall = 8;
-let sizeMedium = 16;
-let sizeLarge = 24;
+let sizeSmall: number = 8;
+let sizeMedium: number = 16;
+let sizeLarge: number = 24;
 
-export let small: Font = Font.from({
-    size: sizeSmall,
-    weight: 'normal'
-});
+export let small: CustomFont = new CustomFont(sizeSmall, [], 'normal');
 
-export let medium: Font = Font.from({
-    size: sizeMedium,
-    weight: 'normal'
-});
+export let medium: CustomFont = new CustomFont(sizeMedium, [], 'normal');
 
-export let large: Font = Font.from({
-    size: sizeLarge,
-    weight: 'normal'
-});
+export let large: CustomFont = new CustomFont(sizeLarge, [], 'normal');

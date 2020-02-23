@@ -19,22 +19,22 @@ export class PlayerStats extends Model {
     public static factory: StatsFactory<PlayerStats>
         = new StatsFactory("/player/");
     // team fields
-    @jsonMember
     @property
+    @jsonMember
     public Games: number = 0;
-    @jsonMember
     @property
+    @jsonMember
     public Touchdowns: number = 0;
-    @jsonMember
     @property
+    @jsonMember
     public OnePointTrys: number = 0;
-    @jsonMember
     @property
+    @jsonMember
     public TwoPointTrys: number = 0;
-    @jsonMember
     @property
+    @jsonMember
     public Interceptions: number = 0;
-    @jsonMember
     @property
+    @jsonMember
     public Sacks: number = 0;
 }

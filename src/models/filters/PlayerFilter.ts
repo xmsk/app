@@ -44,9 +44,6 @@ export class PlayerFilter extends Filter {
 
     get qsp(): string {
         let qsp = "?";
-        if (this.PlayerId !== undefined) {
-            qsp += "PlayerId=" + String(this.PlayerId) + "&";
-        }
         if (this.FirstName !== undefined) {
             qsp += "FirstName=" + String(this.FirstName) + "&";
         }
