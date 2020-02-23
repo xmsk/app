@@ -19,11 +19,14 @@ export abstract class Model {
     public static factory: ModelFactory<Model>;
 
     /**
-     * alias for the Model's id field
+     * alias for the Model's id field - dummy implementation for sub classes
+     * that don't have an Id field (e.g. Stats)
      *
      * @returns the Model's unique Id
      */
-    abstract get Id(): number;
+    get Id(): number {
+        return -1;
+    }
 
     /**
      * check if a given model is in a list by comparing all items in the list to
