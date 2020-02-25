@@ -55,7 +55,7 @@ export class RefereeView extends Page implements Waitable {
 
         // verify OTP
         fetch(
-            restHostname + "/match/" + MatchIdInput + "/verify",
+            restHostname + "/match/" + MatchIdInput + "/verify/",
             // requestOptions
             {
                 method: 'GET',

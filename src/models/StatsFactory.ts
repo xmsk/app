@@ -24,7 +24,7 @@ export class StatsFactory<T extends Model> extends ModelFactory<T> {
     */
     protected async getJsonPromiseById(id: number): Promise<Model> {
         return restGET(
-            this.restHostname + this.restEndpoint + String(id) + "/stats"
+            this.restHostname + this.restEndpoint + String(id) + "/stats/"
         );
     }
 }

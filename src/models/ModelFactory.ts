@@ -72,6 +72,6 @@ export class ModelFactory<T extends Model> extends RESTFactory {
         jsonObj: JSON object of the model with the given id
     */
     protected async getJsonPromiseById(id: number): Promise<Model> {
-        return restGET(this.restHostname + this.restEndpoint + String(id));
+        return restGET(this.restHostname + this.restEndpoint + String(id) + "/");
     }
 }

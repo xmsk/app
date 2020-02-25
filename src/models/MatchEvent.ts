@@ -28,7 +28,7 @@ export class MatchEvent extends Model {
      * @param MatchId MatchId for which the MatchEvent factory should be created
      */
     public static constructMatchEventFactory(MatchId: number): ModelListFactory<MatchEvent> {
-        return new ModelListFactory("/match/" + String(MatchId) + "/matchEvent");
+        return new ModelListFactory("/match/" + String(MatchId) + "/matchEvent/");
     }
 
     // MatchEvent fields

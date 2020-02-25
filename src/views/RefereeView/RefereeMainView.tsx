@@ -393,7 +393,7 @@ export class RefereeMainView extends RefereeSubView implements ModelSettable, Mo
 
         this.toggleWaitMode();
         fetch(
-            restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/" + String(meList[meIndex].MatchEventId),
+            restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/" + String(meList[meIndex].MatchEventId) + "/",
             // requestOptions
             {
                 method: 'DELETE',
@@ -430,7 +430,7 @@ export class RefereeMainView extends RefereeSubView implements ModelSettable, Mo
         let alert: AlertDialog = new AlertDialog();
         // this.toggleWaitMode();
         // fetch(
-        //     restHostname + "/match/" + String(this.match.MatchId) + "/confirm",
+        //     restHostname + "/match/" + String(this.match.MatchId) + "/confirm/",
         //     // requestOptions
         //     {
         //         method: 'POST',

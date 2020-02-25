@@ -82,3 +82,20 @@ UNDER NO CIRCUMSTANCES CHANGE THE ORDER OF THE DECORATORS...DEBUGGING TOOK 4 DAY
 ### Ghost cells
 When we add (`.push()`) items to a `List` that is used as the `items` property of a `ListView`, we get the problem that we have ghost cells that have an undefined `item` and do not display anything.
 In order to circumvent this problem we have to create a completely new list and reassign the `items` property of the `ListView`.
+
+### Network request failiures
+There are several possibilities why a network request can fail.
+The obviouse ones such as no connection to the endpoint (no internet/not in intranet) are not discussed here.
+
+The annoying thing with network request failures is that the error message is always basically the same and we have no good way of debugging it.
+One way to test network requests is via the debug console in the ready built app tusing the `fetch` method.
+Another annoying particularity is that things that work in the developer app do not necessarily work in the finished app.
+
+#### HTTP connection
+The Tabris app when it is built does not work for `HTTP` requests, only `HTTPS` requests.
+The only known way to solve the problem is to enable `HTTPS` on the endpoint, e.g. by placing it behind a reverse proxy like `nginx`.
+
+#### Redirect
+The `flask` endpoint will send a redirect when the trailing slash of the request and endpoint do not match (one hsa a trailing slash and the other doesn't).
+The native Tabris app cannot seem to handle redirects and will fail with a network request error if it receives a redirect response.
+In order to solve the problem all `flask` endpoints have been defined **with** a trailing slash and the calls from the front end have been adjusted to include a trailing slash, as well.

@@ -29,6 +29,9 @@ export abstract class RESTFactory {
         * if we make the ModelFactory class abstract we have to create a new
           factory class for each new model, this is quite anoying
 
+    !! always pass endpoint with trailing slash because of Flask redirects    !!
+    !! and incompetence of Tabris fetch implementation                        !!
+
     arguments:
         endpoint: string representing the relative path of the endpoint where a
             T type json object can be retrieved, e.g. /player/ - must include
