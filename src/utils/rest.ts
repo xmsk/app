@@ -112,7 +112,7 @@ function _rest(
     url: string,
     body?: object | string,
     headers?: Headers,
-    onSuccess?: (j: object) => void,
+    onSuccess?: (j: object | Array<number | string | object>) => void,
     onFailure?: (r: Response) => void,
     onError?: (e: Error) => void
 ): void {
@@ -213,7 +213,7 @@ export function rest(
     url: string,
     body?: object | string,
     headers?: Headers,
-    onSuccess?: (j: object) => void,
+    onSuccess?: (j: object | Array<number | string | object>) => void,
     onFailure?: (r: Response) => void,
     onError?: (e: Error) => void
 ): void {
@@ -231,7 +231,7 @@ export function restNoAlert(
     url: string,
     body?: object | string,
     headers?: Headers,
-    onSuccess?: (j: object) => void,
+    onSuccess?: (j: object | Array<number | string | object>) => void,
     onFailure?: (r: Response) => void,
     onError?: (e: Error) => void
 ): void {
