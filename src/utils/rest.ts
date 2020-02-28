@@ -30,7 +30,7 @@ export async function restGET(url: string = '') {
  *
  * @returns an alert object with default text for an Error
  */
-export function errorAlert(): AlertDialog {
+function errorAlert(): AlertDialog {
     return new AlertDialog({
         title: 'An error occured',
         message: 'There seems to be a connection problem with the back-end',
@@ -45,7 +45,7 @@ export function errorAlert(): AlertDialog {
  *
  * @returns an alert object with default text for a Failure
  */
-export function failureAlert(): AlertDialog {
+function failureAlert(): AlertDialog {
     return new AlertDialog({
         title: 'An error occured',
         buttons: {
@@ -59,21 +59,9 @@ export function failureAlert(): AlertDialog {
  * and a specialized onFailure routine was not given to the rest function
  *
  * @param response Promise to the response received from the REST call
- * @param onError fucntion to be called in case there is an Error when unpacking
- * the JSON response
  */
-function defaultOnFailure(
-    response: Response,
-    onError: (e: Error) => void
-): void {
-    let alert: AlertDialog = failureAlert();
-    // set error message on alert box
-    response.json().then(
-        (j) => alert.message = j.message
-    ).catch(
-        onError
-    );
-    alert.open();
+function defaultOnFailure(response: Response): void {
+    console.debug(response);
     return;
 }
 
@@ -85,7 +73,6 @@ function defaultOnFailure(
  */
 function defaultOnError(e: Error): void {
     console.debug(e);
-    errorAlert().open();
     return;
 }
 
@@ -97,14 +84,16 @@ function defaultOnError(e: Error): void {
  *
  * the default behaviour of the function is to call the url with the parameters
  * that were passed and call
- *      * `defaultOnFailure` if the HTTP return code is not 2xx
- *      * `defaultOnError` if there is an Error during the REST call
- * these two functions open simple Alerts and do nothing afterwards; if a
- * special function should be called after a Failure/Error, it can be passed as
- * an argument; the passed functions can make use of the exported failureAlert
- * and errorAlert and then attach an .onClose() function to the Alerts for
- * further processing
+ * * `onSuccess` if the HTTP return code is 2xx
+ * * `defaultOnFailure` if the HTTP return code is not 2xx
+ * * `defaultOnError` if there is an Error during the REST call
+ * if `popup` is true, simple Alerts are opened upon Failure/Error before the
+ * corresponding postprocessing functions are called (default or the passed
+ * ones); if `popup` is false, the postprocessing functions are called directly;
+ * non-standard postprocessing functions can be passed as an argument
  *
+ * @param popup boolean indicating whether to open the default Alerts upon
+ * Failure/Error
  * @param method the method for the REST call
  * @param url the URL for the REST endpoint
  * @param body the body to be passed in POST/PUT calls
@@ -117,7 +106,8 @@ function defaultOnError(e: Error): void {
  * @param onError function to be called after an Error has been raised during a
  * RET call; the function will be called with the raised Error as an argument
  */
-export function rest(
+function _rest(
+    popup: boolean,
     method: string,
     url: string,
     body?: object | string,
@@ -133,18 +123,54 @@ export function rest(
         bodyFinal = body;
     }
 
+    let definedOnFailure: (r: Response) => void;
     let actualOnFailure: (r: Response) => void;
+    let definedOnError: (e: Error) => void;
     let actualOnError: (e: Error) => void;
 
+    // define functions that should be executed after a possible alert
     if (onError === undefined) {
-        actualOnError = defaultOnError;
+        definedOnError = defaultOnError;
     } else {
-        actualOnError = onError;
+        definedOnError = onError;
     }
     if (onFailure === undefined) {
-        actualOnFailure = (r: Response) => defaultOnFailure(r, actualOnError);
+        definedOnFailure = defaultOnFailure;
     } else {
-        actualOnFailure = onFailure;
+        definedOnFailure = onFailure;
+    }
+
+    // actual functions that will be executed on Failure/Error
+    if (popup) {
+        actualOnError = (e: Error) => {
+            let alert: AlertDialog = errorAlert();
+            alert.open();
+            alert.onClose(
+                () => definedOnError(e)
+            );
+        };
+
+        actualOnFailure = (response: Response) => {
+            let alert: AlertDialog = failureAlert();
+            // set error message on alert box
+            response.json().then(
+                (j) => {
+                    alert.message = j.message;
+                    alert.open();
+                }
+            ).catch(
+                (e) => {
+                    alert.close();
+                    actualOnError(e);
+                }
+            );
+            alert.onClose(
+                () => definedOnFailure(response)
+            );
+        };
+    } else {
+        actualOnError = definedOnError;
+        actualOnFailure = definedOnFailure;
     }
 
     // TODO add default headers
@@ -175,4 +201,39 @@ export function rest(
     ).catch(
         actualOnError
     );
+}
+
+/**
+ * execute a REST call and open an Alert on Failure/Error
+ *
+ * the function is simply a proxy for the internal _rest function
+ */
+export function rest(
+    method: string,
+    url: string,
+    body?: object | string,
+    headers?: Headers,
+    onSuccess?: (j: object) => void,
+    onFailure?: (r: Response) => void,
+    onError?: (e: Error) => void
+): void {
+    _rest(true, method, url, body, headers, onSuccess, onFailure, onError);
+}
+
+/**
+ * execute a REST call and do **not** open an Alert on Failure/Error; e.g. if
+ * the call will be automatically retried or is not crucial
+ *
+ * the function is simply a proxy for the internal _rest function
+ */
+export function restNoAlert(
+    method: string,
+    url: string,
+    body?: object | string,
+    headers?: Headers,
+    onSuccess?: (j: object) => void,
+    onFailure?: (r: Response) => void,
+    onError?: (e: Error) => void
+): void {
+    _rest(false, method, url, body, headers, onSuccess, onFailure, onError);
 }
