@@ -41,7 +41,10 @@ import { ModelListFactory } from '../../models/ModelListFactory';
 import { Player } from '../../models/Player';
 import { Team } from '../../models/Team';
 import * as fonts from '../../utils/fonts';
-import { restHostname } from '../../utils/rest';
+import {
+    rest,
+    restHostname,
+} from '../../utils/rest';
 import { ModelListSettable } from '../ModelListSettable';
 import { ModelSettable } from '../ModelSettable';
 import { RefereeSubView } from './RefereeSubView';
@@ -333,49 +336,28 @@ export class RefereeMainView extends RefereeSubView implements ModelSettable, Mo
             }
         };
 
+        // REST call to add MatchEvent
         this.toggleWaitMode();
-        fetch(
-            restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/",
-            {
-                method: 'POST',
-                headers: new Headers({
-                  'nffl-match-auth': this.matchOTP,
-                  'Content-Type': 'application/json'
-                }),
-                body: JSON.stringify(body)
-            }
-        ).then(
-            (response) => {
+        let url: string = restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/";
+        let headers: Headers = new Headers({
+            'nffl-match-auth': this.matchOTP,
+            'Content-Type': 'application/json'
+        });
+        rest(
+            'POST',
+            url,
+            body,
+            headers,
+            (j) => {
                 this.toggleWaitMode();
-                if (response.status === 201) {
-                    // add returned matchEvent to the list
-                    response.json().then(
-                        (j) => {
-                            // add new MatchEvent to the appropriate List
-                            let serializer = new TypedJSON(MatchEvent);
-                            let matchEvents: List<MatchEvent> = this.dataModel.get(teamClass).matchEvents;
-                            matchEvents.push(serializer.parse(j));
-                            this.dataModel.update();
-                        }
-                    ).catch(
-                        () => {
-                            this.toggleWaitMode();
-                            this.find(TextView).filter('#explanation').only().text = "Fuck lol!";
-                            throw new Error("Match verification went horribly wrong!");
-                        }
-                    );
-                } else {
-                    this.toggleWaitMode();
-                    // show error pop up and try again
-                    throw new Error("Match verification went horribly wrong!");
-                }
-            }
-        ).catch(
-            () => {
-                this.toggleWaitMode();
-                this.find(TextView).filter('#explanation').only().text = "Fuck lol!";
-                throw new Error("Match verification went horribly wrong!");
-            }
+                // add new MatchEvent to the appropriate List
+                let serializer = new TypedJSON(MatchEvent);
+                let matchEvents: List<MatchEvent> = this.dataModel.get(teamClass).matchEvents;
+                matchEvents.push(serializer.parse(j));
+                this.dataModel.update();
+            },
+            () => this.toggleWaitMode(),
+            () => this.toggleWaitMode()
         );
 
         return;
@@ -391,35 +373,25 @@ export class RefereeMainView extends RefereeSubView implements ModelSettable, Mo
         }
         let meList: List<MatchEvent> = this.dataModel.get(event.target.class).matchEvents;
 
+        // REST call for deletion
         this.toggleWaitMode();
-        fetch(
-            restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/" + String(meList[meIndex].MatchEventId) + "/",
-            // requestOptions
-            {
-                method: 'DELETE',
-                headers: new Headers({
-                  'nffl-match-auth': this.matchOTP
-                })
-            }
-        ).then(
-            (response: Response) => {
-                this.toggleWaitMode();
-                if (response.status === 200) {
-                    // pop matchEvent from the list
-                    meList.splice(meIndex, 1);
-                    this.dataModel.update();
-                } else {
-                    this.toggleWaitMode();
-                    // show error pop up and try again
-                    throw new Error("Match verification went horribly wrong!");
-                }
-            }
-        ).catch(
+        let url: string = restHostname + "/match/" + String(this.match.MatchId) + "/matchEvent/" + String(meList[meIndex].MatchEventId) + "/";
+        let headers: Headers = new Headers({
+            'nffl-match-auth': this.matchOTP
+        });
+        rest(
+            'DELETE',
+            url,
+            undefined,
+            headers,
             () => {
                 this.toggleWaitMode();
-                this.find(TextView).filter('#explanation').only().text = "Fuck lol!";
-                throw new Error("Match verification went horribly wrong!");
-            }
+                // pop matchEvent from the list
+                meList.splice(meIndex, 1);
+                this.dataModel.update();
+            },
+            () => this.toggleWaitMode(),
+            () => this.toggleWaitMode()
         );
 
         return;
@@ -428,58 +400,36 @@ export class RefereeMainView extends RefereeSubView implements ModelSettable, Mo
     private finish(): void {
         // submit game to set status to "finished"
         let alert: AlertDialog = new AlertDialog();
-        // this.toggleWaitMode();
-        // fetch(
-        //     restHostname + "/match/" + String(this.match.MatchId) + "/confirm/",
-        //     // requestOptions
-        //     {
-        //         method: 'POST',
-        //         headers: new Headers({
-        //           'nffl-match-auth': this.matchOTP
-        //         })
-        //     }
-        // ).then(
-        //     (response: Response) => {
-        //         this.toggleWaitMode();
-        //         if (response.status === 200) {
-        //             // open success popup
-        //             alert = new AlertDialog({
-        //                 title: 'Finished',
-        //                 message: 'The game has sucessfully been officiated!',
-        //                 buttons: {
-        //                     ok: 'restart',
-        //                     cancel: 'close'
-        //                 }
-        //             });
-        //             alert.onCloseOk(
-        //                 () => this.parent(RefereeView).startOver()
-        //             );
-        //             alert.open();
 
-        //         } else {
-        //             // show error pop up
-        //             alert = new AlertDialog({
-        //                 title: 'Failed to finish match',
-        //                 message: 'Please try submitting the results again!',
-        //                 buttons: {
-        //                     ok: 'ok'
-        //                 }
-        //             });
-        //             alert.open();
-        //         }
-        //     }
-        // ).catch(
+        // send submit request
+        // this.toggleWaitMode();
+        // let url: string = restHostname + "/match/" + String(this.match.MatchId) + "/confirm/";
+        // let headers: Headers = new Headers({
+        //     'nffl-match-auth': this.matchOTP
+        // });
+        // rest(
+        //     'POST',
+        //     url,
+        //     undefined,
+        //     headers,
         //     () => {
         //         this.toggleWaitMode();
+        //         // open success popup
         //         alert = new AlertDialog({
-        //             title: 'Failed to finish match',
-        //             message: 'Please try submitting the results again!',
+        //             title: 'Finished',
+        //             message: 'The game has sucessfully been officiated!',
         //             buttons: {
-        //                 ok: 'ok'
+        //                 ok: 'restart',
+        //                 cancel: 'close'
         //             }
         //         });
+        //         alert.onCloseOk(
+        //             () => this.parent(RefereeView).startOver()
+        //         );
         //         alert.open();
-        //     }
+        //     },
+        //     () => this.toggleWaitMode(),
+        //     () => this.toggleWaitMode()
         // );
 
         alert = new AlertDialog({

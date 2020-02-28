@@ -10,11 +10,13 @@ import {
     Page,
     Properties,
     TextInput,
-    TextView,
     WidgetCollection,
   } from 'tabris';
 import { Match } from '../../models/Match';
-import { restHostname } from '../../utils/rest';
+import {
+    rest,
+    restHostname
+} from '../../utils/rest';
 import { Waitable } from '../Waitable';
 import { RefereeInitView } from './RefereeInitView';
 import { RefereeMainView } from './RefereeMainView';
@@ -51,35 +53,23 @@ export class RefereeView extends Page implements Waitable {
         console.debug("MatchId:", MatchIdInput);
         console.debug("MatchOTP:", MatchOTPInput);
 
-        this.toggleWaitMode();
-
         // verify OTP
-        fetch(
-            restHostname + "/match/" + MatchIdInput + "/verify/",
-            // requestOptions
-            {
-                method: 'GET',
-                headers: new Headers({
-                  'nffl-match-auth': MatchOTPInput
-                })
-            }
-        ).then(
-            (response: Response) => {
-                this.toggleWaitMode();
-                if (response.status === 200) {
-                    // proceed to main RefereeView
-                    this.createMainView(Number(MatchIdInput), MatchOTPInput);
-                } else {
-                    // show error pop up and try again
-                    this.find(TextView).filter('#explanation').only().text = "Fuck lol!";
-                }
-            }
-        ).catch(
+        this.toggleWaitMode();
+        let url: string = restHostname + "/match/" + MatchIdInput + "/verify/";
+        let headers: Headers = new Headers({
+            'nffl-match-auth': MatchOTPInput
+        });
+        rest(
+            'GET',
+            url,
+            undefined,
+            headers,
             () => {
                 this.toggleWaitMode();
-                this.find(TextView).filter('#explanation').only().text = "Fuck lol!";
-                throw new Error("Match verification went horribly wrong!");
-            }
+                this.createMainView(Number(MatchIdInput), MatchOTPInput);
+            },
+            () => this.toggleWaitMode(),
+            () => this.toggleWaitMode()
         );
     }
 
