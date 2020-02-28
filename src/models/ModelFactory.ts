@@ -11,7 +11,7 @@ class objects?
 */
 
 import { TypedJSON } from 'typedjson';
-import { restGET } from '../utils/rest';
+import { rest } from '../utils/rest';
 import { ModelSettable } from '../views/ModelSettable';
 import { Model } from './Model';
 import {
@@ -50,28 +50,24 @@ export class ModelFactory<T extends Model> extends RESTFactory {
             // no need to fetch the data from the server
             view.setModel(serializer.parse(model));
         } else {
-            this.getJsonPromiseById(model).then(
-                (p) => {
-                    view.setModel(serializer.parse(p));
-                }
-            ).catch(
-                (err) => {
-                    console.log(err);
+            rest(
+                'GET',
+                this.getUrlWithId(model),
+                undefined,
+                undefined,
+                (j) => {
+                    view.setModel(serializer.parse(j));
                 }
             );
         }
     }
 
-    /*
-    get a json representation of the model given the id
-
-    arguments:
-        id: id of the model to get
-
-    returns:
-        jsonObj: JSON object of the model with the given id
-    */
-    protected async getJsonPromiseById(id: number): Promise<Model> {
-        return restGET(this.restHostname + this.restEndpoint + String(id) + "/");
+    /**
+     * generate a URL to call for a specific id
+     *
+     * @param id id of the object to be generated
+     */
+    protected getUrlWithId(id: number): string {
+        return this.restHostname + this.restEndpoint + String(id) + "/";
     }
 }
