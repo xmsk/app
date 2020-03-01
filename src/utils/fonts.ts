@@ -35,7 +35,8 @@ let sizeMedium: number = 16;
 let sizeLarge: number = 24;
 
 export let small: CustomFont = new CustomFont(sizeSmall, [], 'normal');
-
 export let medium: CustomFont = new CustomFont(sizeMedium, [], 'normal');
-
 export let large: CustomFont = new CustomFont(sizeLarge, [], 'normal');
+export let smallBold: CustomFont = new CustomFont(sizeSmall, [], 'bold');
+export let mediumBold: CustomFont = new CustomFont(sizeMedium, [], 'bold');
+export let largeBold: CustomFont = new CustomFont(sizeLarge, [], 'bold');
