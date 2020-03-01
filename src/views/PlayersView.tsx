@@ -8,7 +8,7 @@ player to display detailed information
 */
 import {
   Action,
-  Button,
+  Composite,
   NavigationView,
   Page,
   Popover,
@@ -35,6 +35,8 @@ export class PlayersView extends Page implements ModelListSettable {
 
   @property public players: List<Player> = new List<Player>();
   private _playersListView: ListView<Player>;
+  private listFont: fonts.CustomFont = fonts.large;
+  private listHeadingFont: fonts.CustomFont = fonts.largeBold;
 
   constructor(properties: Properties<PlayersView>) {
     super();
@@ -42,39 +44,35 @@ export class PlayersView extends Page implements ModelListSettable {
     // need to set properties before we reference them (e.g. the model)
     this.set(properties);
 
-    // create and add ListView to display the players
-    this._playersListView = <ListView stretchX bottom='next()' top='prev() 8' items={this.players}>
-      <Cell highlightOnTouch onTap={
-        (ev) => {
-          console.log('click player');
-          console.log(ev.target);
-          this._openPlayerPopover(ev);
-        }
-      }>
-        <TextView centerY left={0} width={40} alignment='right' font={fonts.large} textColor='#212121' bind-text='item.JerseyNumber'/>
-        <TextView centerY left='prev() 12' width={150} alignment='left' font={fonts.large} textColor='#212121' bind-text='item.FirstName'/>
-        <TextView centerY left='prev() 8' width={150} alignment='left' font={fonts.large} textColor='#212121' bind-text='item.LastName'/>
-      </Cell>
-    </ListView>;
-
     this.append(
-      new TextView({
-        id: 'heading',
-        centerX: 0,
-        top: 0,
-        font: fonts.large
-      }),
-      new Button({
-        id: 'refresh',
-        centerX: 0,
-        top: 'prev() 8',
-        text: 'Refresh',
-        font: fonts.large
-      }).onSelect(
-        () => this.refreshPlayers()
-      ),
-      this._playersListView
+      <$>
+        <TextView id='heading' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL Players</TextView>
+        <Composite id='listHeaders' stretchX top='prev() 8' height={this.listHeadingFont.viewHeight}>
+            <TextView centerY left='prev() 8' width={this.listHeadingFont.viewHeight} height={this.listHeadingFont.viewHeight} alignment='right' font={this.listHeadingFont} textColor='#212121' text='#'/>
+            <TextView centerY left='prev()' width={this.listHeadingFont.viewHeight} height={this.listHeadingFont.viewHeight} alignment='centerX' font={this.listHeadingFont} textColor='#212121' text=''/>
+            <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='FirstName'/>
+            <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='LastName'/>
+            <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='TeamName'/>
+        </Composite>
+        <ListView id='playersList' stretchX bottom='next()' top='prev()' items={this.players}>
+          <Cell highlightOnTouch onTap={
+            (ev) => {
+              console.log('click player');
+              console.log(ev.target);
+              this._openPlayerPopover(ev);
+            }
+          }>
+            <TextView centerY left='prev() 8' width={this.listFont.viewHeight} height={this.listFont.viewHeight} alignment='right' font={this.listFont} textColor='#212121' bind-text='item.JerseyNumber'/>
+            <TextView centerY left='prev()' width={this.listFont.viewHeight} height={this.listFont.viewHeight} alignment='centerX' font={this.listFont} textColor='#212121' text='-'/>
+            <TextView centerY left='prev()' right='next()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.FirstName'/>
+            <TextView centerY left='prev()' right='next()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.LastName'/>
+            <TextView centerY left='prev()' right='next()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Team.TeamName'/>
+          </Cell>
+        </ListView>
+      </$>
     );
+    // assign ListView for easier handling
+    this._playersListView = this._find(ListView).filter('#playersList').only();
   }
 
   public setModelList(list: List<Player>): void {
@@ -98,7 +96,7 @@ export class PlayersView extends Page implements ModelListSettable {
       <Popover>
         <NavigationView stretch>
           <Action placement='navigation' title='Close' onSelect={() => popover.close()}/>
-          <Page title='Popover'/>
+          <Page title={player.Identification}/>
         </NavigationView>
       </Popover>
     );

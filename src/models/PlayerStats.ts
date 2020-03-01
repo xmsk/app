@@ -37,4 +37,7 @@ export class PlayerStats extends Model {
     @property
     @jsonMember
     public Sacks: number = 0;
+    @property
+    @jsonMember
+    public Safeties: number = 0;
 }
