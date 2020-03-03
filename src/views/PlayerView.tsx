@@ -52,34 +52,34 @@ export class PlayerView extends Composite implements ModelSettable {
             <$>
                 <Composite stretchX height={200} top={0} background='linear-gradient(45deg, #0288d1 10%, #00dfff)'/>
                 <TextView left={8} right={0} top='prev()' height={this.headFont.viewHeight} font={this.headFont} alignment='left'>Stats</TextView>
-                <Composite id='stats' stretchY left={8} right='next()' top='prev() 8' bottom='next()'>
-                    <Composite id='Games' stretchX top={0} height={35}>
+                <Composite id='stats' stretchY left={8} right='next()' top='prev()' bottom='next()'>
+                    <Composite id='Games' stretchX top={0} height={this.font.viewHeight}>
                         <TextView id='gmLabel' left={0} width={200} font={this.font}>Games: </TextView>
-                        <TextView id='gmNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.Games'/>
+                        <TextView id='gmNumber' left='prev()' width={50} font={this.font} bind-text='stats.Games'/>
                     </Composite>
-                    <Composite id='touchdowns' stretchX top='prev() 8' height={35}>
+                    <Composite id='touchdowns' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='tdLabel' left={0} width={200} font={this.font}>Touchdowns: </TextView>
-                        <TextView id='tdNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.Touchdowns'/>
+                        <TextView id='tdNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.Touchdowns'/>
                     </Composite>
-                    <Composite id='onePointTrys' stretchX top='prev() 8' height={35}>
+                    <Composite id='onePointTrys' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='optLabel' left={0} width={200} font={this.font}>One Point Trys: </TextView>
-                        <TextView id='optNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.OnePointTrys'/>
+                        <TextView id='optNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.OnePointTrys'/>
                     </Composite>
-                    <Composite id='twoPointTry' stretchX top='prev() 8' height={35}>
+                    <Composite id='twoPointTry' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='tptLabel' left={0} width={200} font={this.font}>Two Point Trys: </TextView>
-                        <TextView id='tptNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.TwoPointTrys'/>
+                        <TextView id='tptNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.TwoPointTrys'/>
                     </Composite>
-                    <Composite id='interceptions' stretchX top='prev() 8' height={35}>
+                    <Composite id='interceptions' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='intLabel' left={0} width={200} font={this.font}>Interceptions: </TextView>
-                        <TextView id='intNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.Interceptions'/>
+                        <TextView id='intNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.Interceptions'/>
                     </Composite>
-                    <Composite id='sacks' stretchX top='prev() 8' height={35}>
+                    <Composite id='sacks' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='sxLabel' left={0} width={200} font={this.font}>Sacks: </TextView>
-                        <TextView id='sxNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.Sacks'/>
+                        <TextView id='sxNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.Sacks'/>
                     </Composite>
-                    <Composite id='safeties' stretchX top='prev() 8' height={35}>
+                    <Composite id='safeties' stretchX top='prev()' height={this.font.viewHeight}>
                         <TextView id='sfLabel' left={0} width={200} font={this.font}>Safeties: </TextView>
-                        <TextView id='sfNumber' left='prev() 8' width={50} font={this.font} bind-text='stats.Safeties'/>
+                        <TextView id='sfNumber' left='prev()' width={50} font={this.font} bind-text='stats.MatchEventStats.Safeties'/>
                     </Composite>
                 </Composite>
             </$>

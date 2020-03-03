@@ -47,8 +47,8 @@ export class PlayersView extends Page implements ModelListSettable {
     this.append(
       <$>
         <TextView id='heading' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL Players</TextView>
-        <Composite id='listHeaders' stretchX top='prev() 8' height={this.listHeadingFont.viewHeight}>
-            <TextView centerY left='prev() 8' width={this.listHeadingFont.viewHeight} height={this.listHeadingFont.viewHeight} alignment='right' font={this.listHeadingFont} textColor='#212121' text='#'/>
+        <Composite id='listHeaders' stretchX top='prev()' height={this.listHeadingFont.viewHeight}>
+            <TextView centerY left='prev()' width={this.listHeadingFont.viewHeight} height={this.listHeadingFont.viewHeight} alignment='right' font={this.listHeadingFont} textColor='#212121' text='#'/>
             <TextView centerY left='prev()' width={this.listHeadingFont.viewHeight} height={this.listHeadingFont.viewHeight} alignment='centerX' font={this.listHeadingFont} textColor='#212121' text=''/>
             <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='FirstName'/>
             <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='LastName'/>
@@ -62,7 +62,7 @@ export class PlayersView extends Page implements ModelListSettable {
               this._openPlayerPopover(ev);
             }
           }>
-            <TextView centerY left='prev() 8' width={this.listFont.viewHeight} height={this.listFont.viewHeight} alignment='right' font={this.listFont} textColor='#212121' bind-text='item.JerseyNumber'/>
+            <TextView centerY left='prev()' width={this.listFont.viewHeight} height={this.listFont.viewHeight} alignment='right' font={this.listFont} textColor='#212121' bind-text='item.JerseyNumber'/>
             <TextView centerY left='prev()' width={this.listFont.viewHeight} height={this.listFont.viewHeight} alignment='centerX' font={this.listFont} textColor='#212121' text='-'/>
             <TextView centerY left='prev()' right='next()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.FirstName'/>
             <TextView centerY left='prev()' right='next()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.LastName'/>

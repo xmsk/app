@@ -11,19 +11,27 @@ import {
     jsonMember,
     jsonObject
 } from 'typedjson';
-import { MatchEventStats } from './MatchEventStats';
 import {Model} from './Model';
-import { StatsFactory } from './StatsFactory';
 
 @jsonObject
-export class PlayerStats extends Model {
-    public static factory: StatsFactory<PlayerStats>
-        = new StatsFactory("/player/");
-    // team fields
+export class MatchEventStats extends Model {
+    // stats fields
     @property
     @jsonMember
-    public Games: number = 0;
+    public Touchdowns: number = 0;
     @property
     @jsonMember
-    public MatchEventStats: MatchEventStats;
+    public OnePointTrys: number = 0;
+    @property
+    @jsonMember
+    public TwoPointTrys: number = 0;
+    @property
+    @jsonMember
+    public Interceptions: number = 0;
+    @property
+    @jsonMember
+    public Sacks: number = 0;
+    @property
+    @jsonMember
+    public Safeties: number = 0;
 }
