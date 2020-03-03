@@ -14,10 +14,13 @@ import {
 import {League} from './League';
 import {Model} from './Model';
 import { ModelFactory } from './ModelFactory';
+import { ModelListFactory } from './ModelListFactory';
 
 @jsonObject
 export class Team extends Model {
     public static factory: ModelFactory<Team> = new ModelFactory("/team/");
+    public static listFactory: ModelListFactory<Team> =
+        new ModelListFactory("/team/");
     // team fields
     @property
     @jsonMember
@@ -34,5 +37,9 @@ export class Team extends Model {
 
     get Id(): number {
         return this.TeamId;
+    }
+
+    get Identification() {
+        return this.TeamName + " - " + this.HomeTown;
     }
 }
