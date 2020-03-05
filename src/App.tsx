@@ -17,10 +17,12 @@ import {
 import { Cell, List, ListView } from 'tabris-decorators';
 import {MainViewModel} from './models/MainViewModel';
 import { Player } from './models/Player';
+import { Team } from './models/Team';
 import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
 import { RefereeView } from './views/RefereeView/RefereeView';
+import { TeamsView } from './views/TeamsView';
 
 export class App {
 
@@ -50,6 +52,11 @@ export class App {
         let players = <PlayersView stretch title='Players'/>;
         Player.listFactory.constructToView("", players, Player);
         this.items.push(players);
+
+        // teams page
+        let teams = <TeamsView stretch title='Teams'/>;
+        Team.listFactory.constructToView("", teams, Team);
+        this.items.push(teams);
 
         // page for officiating Matches
         let referee = <RefereeView stretch title='Referee'/>;
