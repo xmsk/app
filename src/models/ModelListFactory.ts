@@ -52,6 +52,7 @@ export class ModelListFactory<T extends Model> extends RESTFactory {
                 undefined,
                 (j: object[]) => {
                     let list: List<T> = this.parseJsonArray(j, serializer);
+                    console.log("view", view);
                     view.setModelList(list);
                 }
             );

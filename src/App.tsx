@@ -22,6 +22,7 @@ import * as fonts from './utils/fonts';
 import {MainView} from './views/MainView';
 import {PlayersView} from './views/PlayersView';
 import { RefereeView } from './views/RefereeView/RefereeView';
+import { ScheduleView } from './views/ScheduleView/ScheduleView';
 import { TeamsView } from './views/TeamsView';
 
 export class App {
@@ -47,6 +48,11 @@ export class App {
         let main = <MainView stretch title='Main' model={this._main}/>;
         this._main.buttonText = 'cant touch this!';
         this.items.push(main);
+
+        // schedule page
+        console.log("creating schedule");
+        let schedule = <ScheduleView stretch title='Schedule'/>;
+        this.items.push(schedule);
 
         // players page
         let players = <PlayersView stretch title='Players'/>;
