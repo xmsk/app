@@ -15,6 +15,7 @@ import { GameDay } from './GameDay';
 import { Model } from './Model';
 import { ModelFactory } from './ModelFactory';
 import { ModelListFactory } from './ModelListFactory';
+import { Score } from './Score';
 import { Team } from './Team';
 
 @jsonObject
@@ -44,6 +45,9 @@ export class Match extends Model {
     @property
     @jsonMember
     public Time: string;
+    @property
+    @jsonMember
+    public Score: Score;
 
     get Id(): number {
         return this.MatchId;
