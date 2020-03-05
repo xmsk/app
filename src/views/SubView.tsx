@@ -2,13 +2,15 @@
 Author: Max Kessler <max.e.kessler@gmail.com>
 Date: 11.01.2020 19:40
 
-abstract base class for the sub views that are attached to the RefereeView;
+abstract base class for the sub views that are attached global Views (attached
+to the global NavigationView); this view can be used to have flows in a page
+(i.e. switch between different views in the same Drawer tab)
 needed to have a type that is both a Composite and implements Waitable
 */
 import { Composite } from 'tabris';
-import { Waitable } from '../Waitable';
+import { Waitable } from './Waitable';
 
-export abstract class RefereeSubView extends Composite implements Waitable {
+export abstract class SubView extends Composite implements Waitable {
 
     private waitMode: boolean = false;
 

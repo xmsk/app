@@ -14,10 +14,10 @@ import {
     TextView,
   } from 'tabris';
 import * as fonts from '../../utils/fonts';
-import { RefereeSubView } from './RefereeSubView';
+import { SubView } from "../SubView";
 import { RefereeView } from './RefereeView';
 
-export class RefereeInitView extends RefereeSubView {
+export class RefereeInitView extends SubView {
 
     private font: fonts.CustomFont = fonts.large;
 

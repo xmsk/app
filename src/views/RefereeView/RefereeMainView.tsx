@@ -47,7 +47,7 @@ import {
 } from '../../utils/rest';
 import { ModelListSettable } from '../ModelListSettable';
 import { ModelSettable } from '../ModelSettable';
-import { RefereeSubView } from './RefereeSubView';
+import { SubView } from "../SubView";
 import { RefereeView } from './RefereeView';
 
 /**
@@ -102,7 +102,7 @@ class DataModel {
 // @component invalidates public find(), apply(), children() methods, have to
 // use protected ones with _ prefix
 @component
-export class RefereeMainView extends RefereeSubView implements ModelSettable, ModelListSettable {
+export class RefereeMainView extends SubView implements ModelSettable, ModelListSettable {
 
     // make public property so it can be set via JSX
     @property public matchOTP: string;

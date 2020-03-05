@@ -17,15 +17,15 @@ import {
     rest,
     restHostname
 } from '../../utils/rest';
+import { SubView } from '../SubView';
 import { Waitable } from '../Waitable';
 import { RefereeInitView } from './RefereeInitView';
 import { RefereeMainView } from './RefereeMainView';
-import { RefereeSubView } from './RefereeSubView';
 
 export class RefereeView extends Page implements Waitable {
 
     /** the current Composite that is appended to the RefereeView */
-    private currentComposite: RefereeSubView;
+    private currentComposite: SubView;
 
     constructor(properties: Properties<RefereeView>) {
         super(properties);
