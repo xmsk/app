@@ -45,7 +45,7 @@ export class MatchesView extends SubView implements ModelListSettable {
                 <TextView id='heading' class='notWaitMode' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left' bind-text='title'/>
                 <ListView id='matchesList' class='notWaitMode' stretchX bottom='next()' top='prev()' items={this.matches}>
                     <Cell>
-                        <TextView id='time' stretchX top='prev()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Time'/>
+                        <TextView id='time' stretchX top='prev()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.TimeHHMM'/>
                         <Composite id='homeTeamComposite' stretchX top='prev()' height={this.listFont.viewHeight}>
                             <TextView left={{percent: 5}} right={{percent: 15}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.HomeTeam.TeamName'/>
                             <TextView left={{percent: 85}} right={{percent: 5}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Score.HomeScore'/>

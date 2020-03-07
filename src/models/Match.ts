@@ -52,4 +52,11 @@ export class Match extends Model {
     get Id(): number {
         return this.MatchId;
     }
+
+    /**
+     * get useful time representation
+     */
+    get TimeHHMM(): string {
+        return this.Time.substr(0, 5);
+    }
 }
