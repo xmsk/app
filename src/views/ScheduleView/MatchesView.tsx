@@ -5,6 +5,7 @@ Date: 01.03.2020 18:56
 View to list matches including results in a schedule
 */
 import {
+    ActivityIndicator,
     Button,
     Composite,
     Properties,
@@ -40,8 +41,9 @@ export class MatchesView extends SubView implements ModelListSettable {
 
         this.append(
             <$>
-                <TextView id='heading' stretchX top='prev()' height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left' bind-text='title'/>
-                <ListView id='matchesList' stretchX bottom='next()' top='prev()' items={this.matches}>
+                <ActivityIndicator id='activity' class='waitMode' visible={false} center/>
+                <TextView id='heading' class='notWaitMode' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left' bind-text='title'/>
+                <ListView id='matchesList' class='notWaitMode' stretchX bottom='next()' top='prev()' items={this.matches}>
                     <Cell>
                         <TextView id='time' stretchX top='prev()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Time'/>
                         <Composite id='homeTeamComposite' stretchX top='prev()' height={this.listFont.viewHeight}>
@@ -59,7 +61,7 @@ export class MatchesView extends SubView implements ModelListSettable {
                         <Composite stretchX top='prev()' height={this.listFont.viewHeight}/>
                     </Cell>
                 </ListView>
-                <Button stretchX bottom={0} height={this.listFont.buttonHeight} font={this.listFont} onTap={
+                <Button class='notWaitMode' stretchX bottom={0} height={this.listFont.buttonHeight} font={this.listFont} onTap={
                     () => this.parent(ScheduleView).startOver()
                 }>Gamedays</Button>
             </$>
@@ -70,6 +72,7 @@ export class MatchesView extends SubView implements ModelListSettable {
 
     public setModelList(list: List<Match>): void {
         console.log("list", list.length);
+        this.toggleWaitMode(false);
         this.matches = list;
         // have to update ListView items because assignment destroys the object?
         this.matchesListView.items = this.matches;

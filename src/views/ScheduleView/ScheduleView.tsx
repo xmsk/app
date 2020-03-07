@@ -29,8 +29,8 @@ export class ScheduleView extends Page implements Waitable {
         this.start();
     }
 
-    public toggleWaitMode(): void {
-        this.currentComposite.toggleWaitMode();
+    public toggleWaitMode(state?: boolean): void {
+        this.currentComposite.toggleWaitMode(state);
     }
 
     /**
@@ -61,6 +61,7 @@ export class ScheduleView extends Page implements Waitable {
     private start(): void {
         let gameDaysView: GameDaysView = <GameDaysView stretch/>;
         this.currentComposite = gameDaysView;
+        gameDaysView.toggleWaitMode(true);
         GameDay.listFactory.constructToView("", gameDaysView, GameDay);
         this.append(
             this.currentComposite
@@ -78,6 +79,7 @@ export class ScheduleView extends Page implements Waitable {
         let matchFilter: MatchFilter = MatchFilter.construct({
             GameDayId: gameDay.GameDayId
         });
+        matchesView.toggleWaitMode(true);
         Match.listFactory.constructToView(
             matchFilter.qsp,
             matchesView,

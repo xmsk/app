@@ -14,9 +14,18 @@ export abstract class SubView extends Composite implements Waitable {
 
     private waitMode: boolean = false;
 
-    /** default implementation for the sub classes */
-    public toggleWaitMode(): void {
-        this.waitMode = !this.waitMode;
+    /**
+     * default implementation for the sub classes
+     *
+     * @param state optional parameter for setting the state to a predefined
+     * value
+     */
+    public toggleWaitMode(state?: boolean): void {
+        if (state === undefined) {
+            this.waitMode = !this.waitMode;
+        } else {
+            this.waitMode = state;
+        }
 
         this._find('.waitMode').forEach(
             (item) => item.visible = this.waitMode

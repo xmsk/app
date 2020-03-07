@@ -34,8 +34,8 @@ export class RefereeView extends Page implements Waitable {
         this.start();
     }
 
-    public toggleWaitMode(): void {
-        this.currentComposite.toggleWaitMode();
+    public toggleWaitMode(state?: boolean): void {
+        this.currentComposite.toggleWaitMode(state);
     }
 
     public transitionInitToMain(): void {

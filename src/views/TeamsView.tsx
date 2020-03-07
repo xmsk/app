@@ -8,6 +8,7 @@ display detailed information
 */
 import {
   Action,
+  ActivityIndicator,
   Composite,
   NavigationView,
   Page,
@@ -29,14 +30,16 @@ import { TeamStats } from '../models/TeamStats';
 import * as fonts from '../utils/fonts';
 import { ModelListSettable } from './ModelListSettable';
 import {TeamView} from './TeamView';
+import { Waitable } from './Waitable';
 
 @component
-export class TeamsView extends Page implements ModelListSettable {
+export class TeamsView extends Page implements ModelListSettable, Waitable {
 
   @property public teams: List<Team> = new List<Team>();
   private _teamsListView: ListView<Team>;
   private listFont: fonts.CustomFont = fonts.large;
   private listHeadingFont: fonts.CustomFont = fonts.largeBold;
+  private waitMode: boolean = false;
 
   constructor(properties: Properties<TeamsView>) {
     super();
@@ -46,13 +49,14 @@ export class TeamsView extends Page implements ModelListSettable {
 
     this.append(
       <$>
-        <TextView id='heading' stretchX top='prev()' height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL Teams</TextView>
+        <ActivityIndicator id='activity' class='waitMode' visible={false} center/>
+        <TextView id='heading' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL Teams</TextView>
         <Composite id='listHeaders' stretchX top='prev()' height={this.listHeadingFont.viewHeight}>
             <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='TeamName'/>
             <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='HomeTown'/>
             <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='League'/>
         </Composite>
-        <ListView id='teamsList' stretchX bottom='next()' top='prev()' items={this.teams}>
+        <ListView id='teamsList' class='notWaitMode' stretchX bottom='next()' top='prev()' items={this.teams}>
           <Cell highlightOnTouch onTap={
             (ev) => {
               console.log('click Team');
@@ -67,17 +71,36 @@ export class TeamsView extends Page implements ModelListSettable {
         </ListView>
       </$>
     );
+    // have to enable waitMode after we have created the widgets
+    this.toggleWaitMode(true);
     // assign ListView for easier handling
     this._teamsListView = this._find(ListView).filter('#teamsList').only();
   }
 
   public setModelList(list: List<Team>): void {
+    this.toggleWaitMode(false);
     this.teams = list;
     // have to update ListView items because assignment destroys the object?
     this._teamsListView.items = this.teams;
   }
 
+  public toggleWaitMode(state?: boolean): void {
+    if (state === undefined) {
+        this.waitMode = !this.waitMode;
+    } else {
+        this.waitMode = state;
+    }
+
+    this._find('.waitMode').forEach(
+        (item) => item.visible = this.waitMode
+    );
+    this._find('.notWaitMode').forEach(
+        (item) => item.visible = !this.waitMode
+    );
+}
+
   public refreshteams() {
+    this.toggleWaitMode(true);
     Team.listFactory.constructToView("", this, Team);
   }
 

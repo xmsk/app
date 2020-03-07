@@ -60,6 +60,7 @@ export class GameDaysView extends SubView implements ModelListSettable {
 
     public setModelList(list: List<GameDay>): void {
         console.debug("detting gameDays");
+        this.toggleWaitMode(false);
         this.gameDays = list;
         // have to update ListView items because assignment destroys the object?
         this.gameDaysListView.items = this.gameDays;
