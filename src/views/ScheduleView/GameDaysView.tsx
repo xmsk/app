@@ -7,6 +7,7 @@ implement filter mechanisms to filter the gameDays and allow selecting a gameDay
 display detailed information
 */
 import {
+    ActivityIndicator,
     Composite,
     Properties,
     TextView,
@@ -42,8 +43,9 @@ export class GameDaysView extends SubView implements ModelListSettable {
 
         this.append(
             <$>
-                <TextView id='heading' stretchX top='prev()' height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL GameDays</TextView>
-                <ListView id='gameDaysList' stretchX bottom='next()' top='prev()' items={this.gameDays}>
+                <ActivityIndicator id='activity' class='waitMode' visible={false} center/>
+                <TextView id='heading' stretchX top={0} height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>NFFL GameDays</TextView>
+                <ListView id='gameDaysList' class='notWaitMode' stretchX bottom='next()' top='prev()' items={this.gameDays}>
                     <Cell highlightOnTouch onTap={
                         (ev) => this.openMatches(ev)
                     }>
@@ -54,6 +56,7 @@ export class GameDaysView extends SubView implements ModelListSettable {
                 </ListView>
             </$>
         );
+        this.toggleWaitMode(true);
         // assign ListView for easier handling
         this.gameDaysListView = this._find(ListView).filter('#gameDaysList').only();
     }
