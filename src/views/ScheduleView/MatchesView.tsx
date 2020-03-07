@@ -27,6 +27,7 @@ import { ScheduleView } from './ScheduleView';
 export class MatchesView extends SubView implements ModelListSettable {
 
     @property public matches: List<Match> = new List<Match>();
+    @property public title: string = "";
     private matchesListView: ListView<Match>;
     private listFont: fonts.CustomFont = fonts.large;
     // private listHeadingFont: fonts.CustomFont = fonts.largeBold;
@@ -39,21 +40,17 @@ export class MatchesView extends SubView implements ModelListSettable {
 
         this.append(
             <$>
-                <TextView id='heading' stretchX top='prev()' height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left'>Matches</TextView>
-                {/* <Composite id='listHeaders' stretchX top='prev()' height={this.listHeadingFont.viewHeight}>
-                        <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='TeamName'/>
-                        <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='HomeTown'/>
-                        <TextView centerY left='prev()' right='next()' height={this.listHeadingFont.viewHeight} font={this.listHeadingFont} alignment='left' textColor='#212121' text='League'/>
-                </Composite> */}
+                <TextView id='heading' stretchX top='prev()' height={fonts.largeBold.viewHeight} font={fonts.largeBold} alignment='left' bind-text='title'/>
                 <ListView id='matchesList' stretchX bottom='next()' top='prev()' items={this.matches}>
                     <Cell>
-                        <Composite id='homeTeamComposite' stretchX top={0} height={this.listFont.viewHeight}>
-                            <TextView left={{percent: 5}} right={{percent: 10}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.HomeTeam.TeamName'/>
-                            <TextView left={{percent: 90}} right={{percent: 5}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Score.HomeScore'/>
+                        <TextView id='time' stretchX top='prev()' height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Time'/>
+                        <Composite id='homeTeamComposite' stretchX top='prev()' height={this.listFont.viewHeight}>
+                            <TextView left={{percent: 5}} right={{percent: 15}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.HomeTeam.TeamName'/>
+                            <TextView left={{percent: 85}} right={{percent: 5}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Score.HomeScore'/>
                         </Composite>
                         <Composite id='awayTeamComposite' stretchX top='prev()' height={this.listFont.viewHeight}>
-                            <TextView left={{percent: 5}} right={{percent: 10}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.AwayTeam.TeamName'/>
-                            <TextView left={{percent: 90}} right={{percent: 5}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Score.AwayScore'/>
+                            <TextView left={{percent: 5}} right={{percent: 15}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.AwayTeam.TeamName'/>
+                            <TextView left={{percent: 85}} right={{percent: 5}} height={this.listFont.viewHeight} font={this.listFont} alignment='left' textColor='#212121' bind-text='item.Score.AwayScore'/>
                         </Composite>
                         <Composite id='refTeamComposite' stretchX top='prev()' height={this.listFont.viewHeight}>
                             <TextView left={{percent: 5}} width={100} height={this.listFont.viewHeight} font={this.listFont} alignment='left'>Referee:</TextView>

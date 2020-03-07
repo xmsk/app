@@ -74,7 +74,7 @@ export class ScheduleView extends Page implements Waitable {
      */
     private createMatchesView(gameDay: GameDay): MatchesView {
         console.log("createMatchesView");
-        let matchesView: MatchesView = <MatchesView stretch/>;
+        let matchesView: MatchesView = <MatchesView stretch title={gameDay.Identification}/>;
         let matchFilter: MatchFilter = MatchFilter.construct({
             GameDayId: gameDay.GameDayId
         });

@@ -46,4 +46,18 @@ export class GameDay extends Model {
     get Id(): number {
         return this.GameDayId;
     }
+
+    /**
+     * get date without the useless 00:00:00 GMT shit
+     */
+    get OnlyDate(): string {
+        return this.Date.substr(0, 16);
+    }
+
+    /**
+     * get a string to represent the GameDay in the GameDaysView
+     */
+    get Identification(): string {
+        return this.OnlyDate + " (" + this.HostingTeam.TeamName + ")";
+    }
 }
