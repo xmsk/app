@@ -70,7 +70,7 @@ export class App {
 
         // create and add navigation view with default page
         this.navigationView = <NavigationView stretch drawerActionVisible/>;
-        this.navigationView.append(this.items[1]);
+        this.navigationView.append(this.items[0]);
         contentView.append(
             this.navigationView
         );
