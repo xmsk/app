@@ -7,7 +7,7 @@ Date: 05.01.2020 10:40
 utility functions for REST calls to the back end server
 */
 
-export let restHostname: string = "https://intra.xmsk.ch:443";
+export let restHostname: string = "https://nffl.xmsk.ch:443";
 
 /*
 get data from a REST service located at 'url' and return a promis for the JSON
